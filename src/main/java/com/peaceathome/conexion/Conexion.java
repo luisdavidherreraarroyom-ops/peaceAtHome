@@ -7,30 +7,27 @@ import java.sql.SQLException;
 public class Conexion {
 
     private static final String URL =
-            "jdbc:sqlserver://localhost:1433;"
+            "jdbc:sqlserver://localhost;instanceName=SQLEXPRESS;"
             + "databaseName=PeaceAtHome;"
             + "encrypt=true;"
             + "trustServerCertificate=true;"
-            + "user=peaceadmin;"
-            + "password=Peace12345!;";
+            + "loginTimeout=30;";
+
+    private static final String USER = "peaceadmin";
+    private static final String PASSWORD = "Peace12345!";
 
     public static Connection conectar() {
-
         Connection con = null;
 
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-
-            con = DriverManager.getConnection(URL);
-
-            System.out.println("✅ Conexión exitosa a la base de datos.");
-
+            con = DriverManager.getConnection(URL, USER, PASSWORD);
+            System.out.println("✅ Conexión exitosa a la base de datos PeaceAtHome.");
         } catch (ClassNotFoundException e) {
-            System.out.println("❌ Driver JDBC no encontrado.");
+            System.err.println("❌ Error: Driver JDBC de SQL Server no encontrado.");
             e.printStackTrace();
-
         } catch (SQLException e) {
-            System.out.println("❌ Error al conectar:");
+            System.err.println("❌ Error al conectar con la base de datos.");
             e.printStackTrace();
         }
 
